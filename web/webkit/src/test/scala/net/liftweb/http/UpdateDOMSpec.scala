@@ -47,9 +47,6 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
     }
 
     val diff = VDom.diff(before, after)
-    println("DIFF: " + diff)
-
-    println("EXTRACTION: \n" + Extraction.decompose(diff))
 
     val js = JE.Call("lift.updateBody", Extraction.decompose(diff)).toJsCmd
 
@@ -87,6 +84,7 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
       exec(js)
 
       Utility.trim(toXml(page.getBody)) must beEqualTo(Utility.trim(after))
+      // toXml(page.getBody) must beEqualToIgnoringSpaceOrdered(after) // need specs2 3.7.3
       // switched from beEqualToIgnoringSpace because it doesn't check inside the elements
       // resulting in false positives
     } finally {
@@ -194,10 +192,10 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
           <div>
             <hr/>
             <ul>
-              <li>Message 4</li>
-              <li>Message 1</li>
               <li>Message 2</li>
               <li>Message 3</li>
+              <li>Message 4</li>
+              <li>Message 1</li>
             </ul>
           </div>
         </body>
@@ -225,10 +223,10 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
           <div>
             <hr/>
             <ul>
-              <li>Message 2</li>
-              <li>Message 5</li>
-              <li>Message 1</li>
               <li>Message 3</li>
+              <li>Message 2</li>
+              <li>Message 1</li>
+              <li>Message 5</li>
               <li>Message 4</li>
             </ul>
           </div>

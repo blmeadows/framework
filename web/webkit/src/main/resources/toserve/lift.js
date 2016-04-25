@@ -436,12 +436,6 @@
     }
 
     function reorderNode(parent, before, after) {
-      // IT WORKS! (gets before and after position)
-      // TODO: actually reorder the nodes
-      console.log("*** IN REORDER ***");
-      console.log("Parent: " + parent.children.length);
-      console.log("Before: " + before);
-      console.log("After: " + after);
       parent.insertBefore(parent.children[before], parent.children[after]);
     }
 
