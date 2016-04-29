@@ -100,7 +100,6 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
             <hr/>
             <ul>
               <li>Message 1</li>
-              <li>Message 2</li>
             </ul>
           </div>
         </body>
@@ -111,7 +110,6 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
             <hr/>
             <ul>
               <li>Message 1</li>
-              <li>Message 3</li>
               <li>Message 2</li>
             </ul>
           </div>
@@ -137,10 +135,10 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
           <div>
             <hr/>
             <ul>
-              <li>Message 3</li>
-              <li>Message 4</li>
               <li>Message 1</li>
+              <li>Message 4</li>
               <li>Message 2</li>
+              <li>Message 3</li>
             </ul>
           </div>
         </body>
@@ -228,6 +226,103 @@ object UpdateDOMSpec extends Specification with XmlMatchers {
               <li>Message 1</li>
               <li>Message 5</li>
               <li>Message 4</li>
+            </ul>
+          </div>
+        </body>
+
+      updateAndCompare(before, after)
+    }//.pendingUntilFixed("Not doing reordering yet")
+
+    "find added and reordered elements" in {
+      val before =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 1</li>
+              <li>Message 2</li>
+              <li>Message 3</li>
+              <li>Message 4</li>
+              <li>Message 5</li>
+            </ul>
+          </div>
+        </body>
+
+      val after =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 3</li>
+              <li>Message 2</li>
+              <li>Message 1</li>
+              <li>Message 5</li>
+              <li>Message 4</li>
+              <li>Message 6</li>
+            </ul>
+          </div>
+        </body>
+
+      updateAndCompare(before, after)
+    }//.pendingUntilFixed("Not doing reordering yet")
+
+    "find deleted and reordered elements" in {
+      val before =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 1</li>
+              <li>Message 2</li>
+              <li>Message 3</li>
+              <li>Message 4</li>
+              <li>Message 5</li>
+            </ul>
+          </div>
+        </body>
+
+      val after =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 3</li>
+              <li>Message 2</li>
+              <li>Message 1</li>
+              <li>Message 4</li>
+            </ul>
+          </div>
+        </body>
+
+      updateAndCompare(before, after)
+    }//.pendingUntilFixed("Not doing reordering yet")
+
+    "find added, deleted, and reordered elements" in {
+      val before =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 1</li>
+              <li>Message 2</li>
+              <li>Message 3</li>
+              <li>Message 4</li>
+              <li>Message 5</li>
+            </ul>
+          </div>
+        </body>
+
+      val after =
+        <body data-lift-content-id="main">
+          <div>
+            <hr/>
+            <ul>
+              <li>Message 2</li>
+              <li>Message 1</li>
+              <li>Message 3</li>
+              <li>Message 5</li>
+              <li>Message 4</li>
+              <li>Message 6</li>
             </ul>
           </div>
         </body>

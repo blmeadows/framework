@@ -37,31 +37,24 @@ object VDom {
     val aChildren = a.nonEmptyChildren.filter(isntWhitespace).toList // before
     val bChildren = b.nonEmptyChildren.filter(isntWhitespace).toList // after
 
-    val additions = if (aChildren.size < bChildren.size) {
-      bChildren.diff(aChildren).map {
-        case c => VNodeInsert(bChildren.indexOf(c), VNode.fromXml(c))
-      }
+    val additions = bChildren.diff(aChildren).map {
+      case c if c.label != pcdata && aChildren.indexOf(c) == -1 => VNodeInsert(bChildren.indexOf(c), VNode.fromXml(c))
+      case c => VNodeInsert(-1, VNode.fromXml(a))
     }
-    else Nil
 
-    val deletions = if (aChildren.size > bChildren.size) {
-      aChildren.diff(bChildren).map {
-        case c => VNodeDelete(aChildren.indexOf(c))
-      }
+    val deletions = aChildren.diff(bChildren).map {
+      case c if c.label != pcdata && bChildren.indexOf(c) == -1 => VNodeDelete(aChildren.indexOf(c))
+      case _ => VNodeDelete(-1)
     }
-    else Nil
 
-    val indexes = if(aChildren.size == bChildren.size) {
-      aChildren.zip(bChildren).collect {
-        case (ca, cb) => bChildren.indexOf(ca)
-        case _ => -1
-      }
+    val indexes = aChildren.zip(bChildren).collect {
+      case (ca, cb) => bChildren.indexOf(ca)
+      case _ => -1
     }
-    else Nil
 
     val reorderings = sort(indexes.filterNot(_ == -1).toArray).filterNot(_ == -1).map(a => VNodeReorder(a, a-1))
 
-    val transforms =  additions ++ deletions ++ reorderings
+    val transforms =  additions.filterNot(_ == VNodeInsert(-1,VNode.fromXml(a))):::deletions.filterNot(_==VNodeDelete(-1)):::reorderings
 
     val children = aChildren.zip(bChildren)
       .collect {
